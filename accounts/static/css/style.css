@@ -1,14 +1,20 @@
 /*layout styles*/
 body {
+    margin: 0;
     display: grid;
     grid-template-areas:
             'nav nav nav'
             '. content .';
     grid-template-columns: 1fr 5fr 1fr;
+    background-color: #eff2e6;
+    grid-template-rows: 1fr auto 1fr;
 }
 
 .nav {
     grid-area: nav;
+    padding: 0 5px;
+    line-height: 45px;
+    background-color: #978db8;
 }
 
 .login-logout-reg-nav {
@@ -16,8 +22,29 @@ body {
     text-align: right;
 }
 
+.login-logout-reg-nav p, .login-logout-reg-nav a {
+    display: inline-block;
+}
+
 .content {
     grid-area: content;
     justify-self: center;
 }
 
+label {
+    display: block;
+}
+
+
+
+form {
+    margin: 10px 0;
+    padding: 5% 15%;
+    border-radius: 12px;
+    box-shadow: 2px 4px 15px 4px #81827c;
+    text-align: center;
+}
+
+form input {
+    width: 100%;
+}
