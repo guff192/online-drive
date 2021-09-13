@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="nav">
+
+    <div class="login-logout-reg-nav">
+        {% if user.is_authenticated %}
+            <p>{{ user }}</p>
+            <a href="{% url 'profile' %}">Кабинет</a>
+            <a href="{% url 'logout' %}">Выход</a>
+        {% else %}
+{#            <a href="{% url 'sign_up' %}">Регистрация</a>#}
+            <a href="{% url 'login' %}">Авторизация</a>
+        {% endif %}
+    </div>
+</div>
+
+
+{% for message in messages %}
+
+    <div class="info-box
+{% if 'success' in message.tags %}success-info
+{% elif 'error' in message.tags %}error-info{% endif %}">
+    <p>{{ message }}</p>
+
+{% endfor %}
+</div>
+
+<div class="content">
+
+    {% block content %}
+
+    {% endblock %}
+</div>
+
+</body>
+</html>
