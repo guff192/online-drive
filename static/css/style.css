@@ -1,0 +1,23 @@
+/*layout styles*/
+body {
+    display: grid;
+    grid-template-areas:
+            'nav nav nav'
+            '. content .';
+    grid-template-columns: 1fr 5fr 1fr;
+}
+
+.nav {
+    grid-area: nav;
+}
+
+.login-logout-reg-nav {
+    float: right;
+    text-align: right;
+}
+
+.content {
+    grid-area: content;
+    justify-self: center;
+}
+
