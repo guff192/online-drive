@@ -12,10 +12,10 @@
     <div class="login-logout-reg-nav">
         {% if user.is_authenticated %}
             <p>{{ user }}</p>
-            <a href="{% url 'profile' %}">Кабинет</a>
+            <a href="{% url 'profile' %}">Профиль</a>
             <a href="{% url 'logout' %}">Выход</a>
         {% else %}
-{#            <a href="{% url 'sign_up' %}">Регистрация</a>#}
+            <a href="{% url 'sign_up' %}">Регистрация</a>
             <a href="{% url 'login' %}">Авторизация</a>
         {% endif %}
     </div>

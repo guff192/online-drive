@@ -10,6 +10,11 @@ body {
     grid-template-rows: 1fr auto 1fr;
 }
 
+.profile img {
+    display: inline-block;
+    width: 300px;
+}
+
 .nav {
     grid-area: nav;
     padding: 0 5px;
@@ -36,7 +41,6 @@ label {
 }
 
 
-
 form {
     margin: 10px 0;
     padding: 5% 15%;
@@ -47,4 +51,18 @@ form {
 
 form input {
     width: 100%;
+}
+
+.help-text, .helptext, form ul {
+    color: #535350;
+    list-style-type: none;
+}
+
+.admin-link {
+    display: block;
+    width: 268px;
+    padding: 5%;
+    text-align: center;
+    background-color: #cbdf87;
+    color: #978DB8;
 }
