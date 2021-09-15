@@ -5,14 +5,22 @@
 {% endblock %}
 
 {% block content %}
+    <form method="POST" enctype="multipart/form-data" class="dropzone" action="{% url 'upload_file' %}">
+        <h2>Загрузить файл</h2>
+        {% csrf_token %}
+    </form>
 
     <div class="file-list">
         {% for file in file_list %}
-            <div class="file">
-                <img src="{{ file.icon_url }}" class="file-icon">
-                <p>{{ file.name }}</p>
-            </div>
+            <a href="{% url 'file_detail' file.pk %}">
+                <div class="file">
+                    <img src="{{ file.icon_url }}" class="file-icon">
+                    <p>{{ file.name }}</p>
+                </div>
+            </a>
         {% endfor %}
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"
+            integrity="sha512-VQQXLthlZQO00P+uEu4mJ4G4OAgqTtKG1hri56kQY1DtdLeIqhKUp9W/lllDDu3uN3SnUNawpW7lBda8+dSi7w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock %}

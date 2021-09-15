@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ file.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="file">
+        <img src="{{ file.icon_url }}" class="file-icon">
+        <p>{{ file.name }}</p>
+    </div>
+{% endblock %}
