@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
+    'cloud.apps.CloudConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
