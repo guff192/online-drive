@@ -5,8 +5,21 @@
 {% endblock %}
 
 {% block content %}
+    <div class="actions">
+        <a href="{{ file.file.url }}">Скачать файл</a>
+        {% if file.slug %}
+            <p><a href="{% url 'get_file' file.slug %}">Ссылка на файл</a></p>
+            {% if file.owner == user %}
+                <a href="{% url 'create_file_link' file.pk %}">Сгенерировать новую ссылку</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'create_file_link' file.pk %}">Сгенерировать ссылку</a>
+        {% endif %}
+    </div>
+
     <div class="file">
         <img src="{{ file.icon_url }}" class="file-icon">
         <p>{{ file.name }}</p>
+
     </div>
 {% endblock %}

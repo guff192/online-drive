@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Открыть доступ
+{% endblock title %}
+
+{% block content %}
+    <form method="post">
+        <h1>Создание ссылки</h1>
+        {{ form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Создать ссылку"></p>
+    </form>
+{% endblock content %}

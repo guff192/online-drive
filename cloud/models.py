@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.urls import reverse
 
 
 class File(models.Model):
@@ -17,8 +18,9 @@ class File(models.Model):
         ('t', 'table'),
     )
     file_type = models.CharField(max_length=1, choices=FILE_TYPES, help_text='Тип файла')
-    slug = models.SlugField(unique=True, null=True, blank=True)
-    public = models.BooleanField(help_text='Доступен для неавторизованных пользователей', default=False)
+    slug = models.SlugField(allow_unicode=True, unique=True, null=True, blank=True)
+    public = models.BooleanField('Публичный файл', help_text='Доступен для неавторизованных пользователей',
+                                 default=False)
 
     @property
     def icon_url(self):

@@ -1,11 +1,13 @@
-import os
+import random
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.utils.text import slugify
 from django.views.generic import ListView, DetailView
 
+from cloud.forms import CreateFileLinkForm
 from cloud.models import File
 
 
@@ -17,12 +19,19 @@ class FileListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class FileDetailView(LoginRequiredMixin, DetailView):
+class FileDetailView(DetailView):
     model = File
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.owner != self.request.user:
+
+        if kwargs.get('slug'):
+            slug = kwargs['slug']
+            print(slug)
+            if not slug.split('-')[0].isdigit() and not request.user.is_authenticated:
+                return HttpResponseRedirect(reverse_lazy('login'))
+
+        elif self.object.owner != self.request.user:
             return HttpResponseRedirect(reverse_lazy('cloud'))
 
         context = self.get_context_data(object=self.object)
@@ -34,6 +43,7 @@ file_types = {
     'audio': 'm',
     'video': 'v',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'd',
+    'application/pdf': 'd',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'p',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 't',
 }
@@ -63,6 +73,7 @@ def upload_file(request):
     uploaded_file = request.FILES['file']
 
     name, content_type = uploaded_file.name, uploaded_file.content_type
+    print(content_type)
     file_type = get_file_type(content_type)
     if not file_type:
         response.status_code = 400
@@ -77,3 +88,29 @@ def upload_file(request):
 
     response.status_code = 200
     return response
+
+
+def create_file_link(request, pk):
+    current_user = request.user
+    file = File.objects.get(pk=pk)
+    response = HttpResponse()
+    if file.owner != current_user:
+        response.status_code = 403
+        return response
+
+    if request.method == 'POST':
+        form = CreateFileLinkForm(request.POST)
+        if form.is_valid():
+            file.public = bool(form.data.get('public'))
+            print(file.public)
+            if file.public:
+                slug_chr = chr(random.randint(48, 57))
+            else:
+                slug_chr = chr(random.randint(97, 122))
+            file.slug = slugify(f"{slug_chr} {file.pk} {file.name.split('.')[:-1]}", True)
+            file.save()
+            return HttpResponseRedirect(reverse('file_detail', args=[str(pk)]))
+
+    form = CreateFileLinkForm(instance=file)
+    context = {'form': form}
+    return render(request, 'cloud/create_file_link_form.html', context)
