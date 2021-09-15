@@ -27,7 +27,7 @@ body {
     text-align: right;
 }
 
-.login-logout-reg-nav p, .login-logout-reg-nav a {
+.nav p, .nav a {
     display: inline-block;
 }
 
@@ -65,4 +65,14 @@ form input {
     text-align: center;
     background-color: #cbdf87;
     color: #978DB8;
+}
+
+.file-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-row-gap: 20px;
+}
+
+.file {
+    text-align: center;
 }

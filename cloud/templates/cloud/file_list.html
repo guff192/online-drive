@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Облачное хранилище
+{% endblock %}
+
+{% block content %}
+
+    <div class="file-list">
+        {% for file in file_list %}
+            <div class="file">
+                <img src="{{ file.icon_url }}" class="file-icon">
+                <p>{{ file.name }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
