@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -30,7 +30,7 @@ def profile(request):
 def change_profile(request):
     current_user = request.user
     if not current_user.is_authenticated:
-        return HttpResponseRedirect(reverse_lazy('profile'))
+        return HttpResponseRedirect(reverse_lazy('login'))
 
     if request.method != 'POST':
         user_form = UserForm(instance=current_user)
@@ -38,10 +38,28 @@ def change_profile(request):
     else:
         user_form = UserForm(request.POST, instance=current_user)
         profile_form = ProfileForm(request.POST, request.FILES, instance=current_user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             user_form.save()
+            return HttpResponseRedirect(reverse_lazy('profile'))
+        if profile_form.is_valid():
             profile_form.save()
             return HttpResponseRedirect(reverse_lazy('profile'))
 
     context = {'user_form': user_form, 'profile_form': profile_form}
     return render(request, 'accounts/change_profile.html', context)
+
+
+def change_avatar(request):
+    current_user = request.user
+    if not current_user.is_authenticated:
+        return HttpResponseRedirect(reverse_lazy('login'))
+
+    if request.method != 'POST':
+        return HttpResponseRedirect('profile')
+
+    uploaded_file = request.FILES['file']
+    current_user.profile.avatar = uploaded_file
+    current_user.profile.save()
+    response = HttpResponse()
+    response.status_code = 200
+    return response

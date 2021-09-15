@@ -5,11 +5,16 @@
 {% endblock title %}
 
 {% block content %}
+    <form method="POST" enctype="multipart/form-data" class="dropzone" action="{% url 'change_avatar' %}">
+        <h2>Сменить аватарку</h2>
+        {% csrf_token %}
+    </form>
+
     <form method="POST" enctype="multipart/form-data">
         <h1>Изменить данные</h1>
         {% csrf_token %}
         {{ user_form.as_p }}
-        {{ profile_form.as_p }}
         <p><input type="submit" value="Сохранить"></p>
     </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js" integrity="sha512-VQQXLthlZQO00P+uEu4mJ4G4OAgqTtKG1hri56kQY1DtdLeIqhKUp9W/lllDDu3uN3SnUNawpW7lBda8+dSi7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock content %}
