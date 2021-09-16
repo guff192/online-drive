@@ -1,8 +1,10 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from cloud.views import FileListView, upload_file, FileDetailView, create_file_link
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='files/', permanent=True)),
     path('files/', FileListView.as_view(), name='cloud'),
     path('files/get/<slug>', FileDetailView.as_view(), name='get_file'),
     path('files/<int:pk>', FileDetailView.as_view(), name='file_detail'),
