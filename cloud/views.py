@@ -11,12 +11,25 @@ from cloud.forms import CreateFileLinkForm
 from cloud.models import File
 
 
+def disk_space_used(user):
+    user_files = File.objects.filter(owner=user)
+    space_used = 0
+    for f in user_files:
+        space_used += f.file.size
+    return space_used
+
+
 class FileListView(LoginRequiredMixin, ListView):
     model = File
 
     def get_queryset(self):
         queryset = File.objects.filter(owner=self.request.user)
         return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(FileListView, self).get_context_data(object_list=object_list, **kwargs)
+        context['disk_space_used'] = round(disk_space_used(self.request.user) / 10**6, 1)
+        return context
 
 
 class FileDetailView(DetailView):
@@ -71,12 +84,17 @@ def upload_file(request):
     response = HttpResponse()
 
     uploaded_file = request.FILES['file']
+    if (disk_space_used(current_user) + uploaded_file.size) / 10**6 >= 15:
+        response.status_code = 403
+        response.content = 'Лимит допустимого пространства превышен'
+        return response
 
     name, content_type = uploaded_file.name, uploaded_file.content_type
     print(content_type)
     file_type = get_file_type(content_type)
     if not file_type:
         response.status_code = 400
+        response.content = 'Недопустимый формат файла'
         return response
 
     File.objects.create(
@@ -87,6 +105,7 @@ def upload_file(request):
     )
 
     response.status_code = 200
+    response.content = 'Файл успешно загружен'
     return response
 
 

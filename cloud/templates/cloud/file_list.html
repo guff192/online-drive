@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block content %}
-    <form method="POST" enctype="multipart/form-data" class="dropzone" action="{% url 'upload_file' %}">
+    <p class="disk-space">Израсходовано {{ disk_space_used }} из 15Мб</p>
+
+    <form method="POST" class="dropzone" id="fileform" action="{% url 'upload_file' %}" enctype="multipart/form-data">
         <h2>Загрузить файл</h2>
         {% csrf_token %}
     </form>
@@ -23,4 +25,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"
             integrity="sha512-VQQXLthlZQO00P+uEu4mJ4G4OAgqTtKG1hri56kQY1DtdLeIqhKUp9W/lllDDu3uN3SnUNawpW7lBda8+dSi7w=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="application/javascript">
+        Dropzone.options.fileform = {
+            parallelUploads: 1,
+            success: function (file, response) {
+                // Do what you want to do with your response
+                // This return statement is necessary to remove progress bar after uploading.
+                file.previewElement.innerHTML += '<p class="dz-success-message">Файл успешно загружен</p>';
+                return file.previewElement.classList.add("dz-success");
+            }
+        };
+    </script>
 {% endblock %}

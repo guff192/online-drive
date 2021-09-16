@@ -76,3 +76,14 @@ form input {
 .file {
     text-align: center;
 }
+
+.disk-space {
+    display: block;
+    padding: 1%;
+    text-align: center;
+    background-color: #cbdf87;
+}
+
+.dz-success-message {
+    color: green;
+}
