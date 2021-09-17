@@ -23,17 +23,6 @@
     </div>
 </div>
 
-
-{% for message in messages %}
-
-    <div class="info-box
-{% if 'success' in message.tags %}success-info
-{% elif 'error' in message.tags %}error-info{% endif %}">
-    <p>{{ message }}</p>
-
-{% endfor %}
-</div>
-
 <div class="content">
 
     {% block content %}
